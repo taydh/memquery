@@ -19,7 +19,7 @@ class Memquery
 		return isset($this->tables[$table]);
 	}
 	
-	function makeTable($table, $fields, $values = null)
+	function createTable($table, $fields, $values = null)
 	{
 		$this->dropTable($table);
 		$this->tables[$table] = $fields;
