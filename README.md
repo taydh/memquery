@@ -31,8 +31,10 @@ print_r($rs);
 Filter with JOIN
 
 ```
-$mq->createTable('animal', ['id','name','plant_id'], [[1,'cow',1],[2,'mosquito',2]]);
-$mq->createTable('plant', ['id','name'], [[1,'Grass'],[2,'Tree']]);
+$arrAnimal = [[1,'cow',1],[2,'mosquito',2]];
+$arrPlant = [[1,'Grass'],[2,'Tree']];
+$mq->createTable('animal', ['id','name','plant_id'], $arrAnimal);
+$mq->createTable('plant', ['id','name'], $arrPlant);
 $sql = "SELECT a.id, a.name, b.name as eat FROM animal a LEFT JOIN plant b ON b.id=a.plant_id WHERE a.name='cow'";
 $rs = $mq->fetchAll($sql);
 print_r($rs);
