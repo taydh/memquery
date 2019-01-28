@@ -14,6 +14,11 @@ class Memquery
 		$this->link = new \PDO('sqlite::memory:');
 	}
 	
+	function getLink()
+	{
+		return $this->link;
+	}
+	
 	function isTableExists($table)
 	{
 		return isset($this->tableFields[$table]);
