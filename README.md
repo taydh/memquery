@@ -12,17 +12,28 @@ Principles
 // load the script
 require('path_to/Taydh.Memquery.php');
 
-// create instance
-$memquery = new \Taydh\Memquery();
-
 // supposed we have data coming from csv
 // parse CSV anyway as you see fit
 $arrCsv = array_map('str_getcsv', file('data.csv'));
 $fields = array_shift($arrCSV);
 
+// create instance
+$mq = new \Taydh\Memquery();
+
 // create table and populate with data
-$memquery->createTable('data1', $fields, $arrCSV);
+$mq->createTable('data1', $fields, $arrCSV);
 
 // run SQL query
-$rs = $memquery->fetchAll("select * from data1 where field1='abc'");
+$rs = $mq->fetchAll("select * from data1 where field1='abc'");
+print_r($rs);
+```
+
+Filter with JOIN
+
+```
+$mq->createTable('animal', ['id','name','plant_id'], [[1,'cow',1],[2,'mosquito',2]]);
+$mq->createTable('plant', ['id','name'], [[1,'Grass'],[2,'Tree']]);
+$sql = "SELECT a.id, a.name, b.name as eat FROM animal a LEFT JOIN plant b ON b.id=a.plant_id WHERE a.name='cow'";
+$rs = $mq->fetchAll($sql);
+print_r($rs);
 ```
