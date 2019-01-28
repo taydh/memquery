@@ -7,7 +7,7 @@ MEMQUERY is a helper class to execute sql query inside process scope using sqlit
 class Memquery
 {
 	private $link;
-	private $tables = array();
+	private $tableFields = array();
 	
 	function __construct()
 	{
@@ -16,13 +16,13 @@ class Memquery
 	
 	function isTableExists($table)
 	{
-		return isset($this->tables[$table]);
+		return isset($this->tableFields[$table]);
 	}
 	
 	function createTable($table, $fields, $values = null)
 	{
 		$this->dropTable($table);
-		$this->tables[$table] = $fields;
+		$this->tableFields[$table] = $fields;
 		
 		$q = 'CREATE TABLE '.$table.' (';
 		$count = count($fields);
@@ -54,7 +54,9 @@ class Memquery
 	
 	private function insertData($table, $values)
 	{
-		$fields = $this->tables[$table];
+		if (!is_array($values) || empty($values)) return;
+		
+		$fields = $this->tableFields[$table];
 		
 		$q = 'INSERT INTO '.$table.' (';
 		$count = count($fields);
@@ -73,11 +75,18 @@ class Memquery
 		}
 		$q .= ') VALUES (';
 		
-		for ($i=0; $i<$count; $i++){
-			$field = $hasType ? $keys[$i] : $fields[$i];
-			$type = $hasType ? $fields[$field] : '';
+		$assoc = is_string(array_keys($values)[0]);
 			
-			$q .= "'".$values[$field]."'";
+		for ($i=0; $i<$count; $i++){
+			if ($assoc) {
+				$field = $hasType ? $keys[$i] : $fields[$i];
+				$type = $hasType ? $fields[$field] : '';
+				$value = $values[$field];
+			} else {
+				$value = $values[$i];
+			}
+			
+			$q .= "'".$value."'";
 			if($i < $count-1){
 				$q .= ',';
 			}
@@ -91,12 +100,10 @@ class Memquery
 	function insert($table, $values)
 	{
 		if(is_array($values)){
-			$count = count($values);
-			
-			if($count > 0 && is_array($values[0])){
+			if(isset($values[0]) && is_array($values[0])){
 				// bulk insert
-				foreach($values as $subValues){
-					$this->insertData($table, $subValues);
+				foreach($values as $rowValues){
+					$this->insertData($table, $rowValues);
 				}
 			}
 			else{
