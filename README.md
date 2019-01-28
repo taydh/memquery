@@ -1,6 +1,12 @@
 # Memquery
 Sometime extracting data within a local variable will much easier if we can use SQL rather than using loop and conditional construct. Using in-memory Sqlite is an alternative way to do that. This small helper class provide simple methods to try that.
 
+Principles
+----------
+1. Utilize local in-memory SQL library
+2. Not to be a full data source interface, only insert data, clear and drop table methods, no update and row delete, any change should repopulate data
+3. Underlining handler is provided to do uncovered operations
+
 ```
 // load the script
 require('path_to/Taydh.Memquery.php');
