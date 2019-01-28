@@ -3,8 +3,9 @@ Sometime extracting data within a local variable will much easier if we can use 
 
 Principles
 ----------
-1. Utilize local in-memory SQL library
-2. Not to be a full data source interface, only insert data, clear and drop table methods, no update and row delete, any change should repopulate data
+0. The goal is execute SQL to a 2 dimentional array
+1. Utilize local in-memory SQL library (PDO-SQLITE)
+2. Not to be a full data source interface, only insert data, clear and drop table operations, no update and row delete, any change should repopulate data
 3. Underlining handler is provided to do uncovered operations
 
 ```
